@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Epidemic Simulation</title>
+  <meta charset="utf-8" />
+  <script src="index.js"></script>
+  <link rel="stylesheet" href="index.css">
+
+</head>
+
+
+
+<body class='typora-export os-windows'>
+  <div class='typora-export-content'>
+    <div id='write' class=''>
+      <h1 id='vis-final'><span>Epidemic Simulation</span></h1>
+      <h2 id='intro'><span>intro</span></h2>
+      <h3 id='最简单的传染模型'><span>最简单的传染模型</span></h3>
+      <p><span>首先让我们想象一个最简单的</span><strong><span>传染</span></strong><span>情况，它的假设如下：</span></p>
+      <ul>
+        <li><span>以一个棋盘表示一个社区，棋盘中的每个方格表示一个人；</span></li>
+        <li><span>社区中有一个最初始的感染者，感染者以红色表示；</span></li>
+        <li><span>每个感染者都会传染他周围的邻居；</span></li>
+      </ul>
+      <p><span>让我们来看看这个最简单的情况吧！</span></p>
+      <blockquote>
+        <p><span>你可以点击棋盘来使其重新开始模拟。</span></p>
+      </blockquote>
+      <iframe frameborder=0 width="100%" height="630" src="intro/html/spread.html"> </iframe>
+
+      <h3 id='感染概率'><span>感染概率</span></h3>
+      <p><span>我们可以发现，在最简单的传染模拟中，只要我的邻居被感染，那么一天后，我一定会被感染。显然，这与我们的生活常识不符。我们可以考虑两个生活中常见的原因：</span></p>
+      <ul>
+        <li><span>在正常情况下，我不一定会和我的邻居见面；</span></li>
+        <li><span>即使我与染病的邻居见面，我也不一定会被传染。</span></li>
+      </ul>
+      <p>
+        <span>因此，我们可以引入一个新的概念，即</span><strong><span>感染概率</span></strong><span>，它表示我的邻居感染后，我被感染的概率。接下来，我们一起来看一下加入感染概率之后的传染模型。</span>
+      </p>
+      <blockquote>
+        <p><span>你可以调节棋盘下方的滑动条，来设置你想设定的感染概率，默认感染概率被设置为 0.5。</span></p>
+      </blockquote>
+      <iframe frameborder=0 width="100%" height="660" src="intro/html/spread_with_infectRate.html"> </iframe>
+
+      <h3 id='康复'><span>康复</span></h3>
+      <p>
+        <span>引入感染概率的概念后，我们的模型看起来比最简单的情况真实了不少，值得庆祝！但是，还存在一个十分恐怖的问题：我被感染之后，将永远不会康复！如果真的存在这样的传染病，这将是人类面临的最可怕的灾难。因此，我们再引入一个概念，即</span><strong><span>康复日期</span></strong><span>，它表示一个人从感染到康复所需的天数。</span>
+      </p>
+      <blockquote>
+        <p><span>你可以调节棋盘下方的滑动条，来设置你想设定的康复所需的天数，默认康复日期被设置为 4 天。</span></p>
+      </blockquote>
+      <iframe frameborder=0 width="100%" height="690" src="intro/html/spread_with_recovery.html"> </iframe>
+
+      <h3 id='死亡'><span>死亡</span></h3>
+      <p>
+        <span>引入康复的概念后，在经历一波疫情后，所有人都会康复。这当然是我们希望发生的，但不幸的是，在现实生活中，即使是一次普通的流行性感冒，也有可能夺走一些人的生命。这就是我们接下来要引入的概念：</span><strong><span>死亡率</span></strong><span>，它表示一个人感染疾病后死亡的概率。</span>
+      </p>
+      <blockquote>
+        <p><span>你可以调节棋盘下方的滑动条，来设置你想设定的死亡率，默认死亡率被设置为 0.01。</span></p>
+      </blockquote>
+      <iframe frameborder=0 width="100%" height="720" src="intro/html/spread_with_death.html"> </iframe>
+
+      <h3 id='小小的总结'><span>小小的总结</span></h3>
+      <p>
+        <span>现在，我们的模型基本上有模有样了。通过这段简单的探索，我们引入了传染模型中最基本的几个概念，即</span><strong><span>感染概率</span></strong><span>、</span><strong><span>康复天数</span></strong><span>、</span><strong><span>死亡率</span></strong><span>。但是，我们的旅程还远未结束，我们的简单模型还有很多不足：</span>
+      </p>
+      <ul>
+        <li><span>没有模拟初始有多个感染源的情况，即多点爆发；</span></li>
+        <li><span>没有考虑传染病的潜伏期，即不出现症状但具有感染力的时期；</span></li>
+        <li><span>模型中的社区是静止的，每个人只接触自己的邻居，但在现实生活中，人员是流动的，感染会随人员流动而扩散；</span></li>
+        <li><span>模型是粗糙的，没有建立参数化的数学模型。</span></li>
+      </ul>
+      <p><span>不要着急，让我们继续我们的探索……</span></p>
+      <p>&nbsp;</p>
+
+
+
+      
+      <h2 id='sir传染病模型'><span>SIR传染病模型</span></h2>
+      <p><span>现在，让我们正式进入我们的模型研究——SIR传染病模型：</span></p>
+      <h3 id='模型介绍与假设'> <span>模型介绍与假设</span></h3>
+      <p><span>SIR模型是一种传播模型，是信息传播过程的抽象描述 。它是传染病模型中最经典、最基本的模型。</span></p>
+      <p><span>为了更好地描述这个模型，让我们进行一些基本的假设：</span></p>
+      <ul>
+        <li><p>S(t): 表示易感者（susceptible）的数量，包括在t时刻未被感染但有可能被感染的人群数量.</p></li>
+        <li><p>I(t): 表示感染者（infective）的数量，指在t时刻已被感染成为患者并且具有传染力的人群数量.</p></li>
+        <li><p><span>R(t): 表示移出者（removed）的数量，表示t时刻时已经从感染者移出的人群数量（包括隔离者以及 因治愈获得免疫力的人群）.</span></p></li>
+        <li><p><span>γ: 恢复率系数，从染病者中移出的人数与病人数量的比例成正比，比例系数为γ.</span></p></li>
+        <li><p><span>β: 感染系数,t时刻单位时间内，一个病人能传染的易感者数目与此环境内 易感者总数S(t)成正比，设定比例系数为β.</span></p></li>
+      </ul>
+      <h3 id='sir微分方程'><span>SIR微分方程</span></h3>
+      <p><span>根据这些假设，我们就可以创造出SIR模型的微分方程：</span></p>
+      <p><img src="formula.png" alt="formula" style="zoom:80%;" /></p>
+      <p><span>当然，没有多少人会愿意在飞速浏览网页的过程中解决一个晦涩的微分方程（更别说这里有整整3个！)，为了让大家的目光多在这个重要的模型上停留一会，我们相信一个可视化的图表可以给大家一个更加清晰地感知：</span>
+      </p>
+      <h3 id='sir模型探究'><span>SIR模型探究</span></h3>
+      <p><span>在该图中，你可以滑动拖动条，自发地探究SIR模型的奥秘：</span></p>
+      <ul>
+        <li><span>恢复率系数的变化将如何影响移出者的数量？</span></li>
+        <li><span>感染者被感染的速度与感染系数有什么关系？</span>
+        </li>
+      </ul>
+      <iframe frameborder=0 width="100%" height="1000" src="SIR/mySIR.html"> </iframe>
+      <p>
+        <span>可以看出，在一个感染者数量占易感者数量的0.0000001的社区中，不同的恢复率系数与感染系数对易感者、感染者和移出者的数量影响巨大！这也说明了传染性强的疾病（比如COVID-19）为什么如此可怕！</span>
+      </p>
+      <p><span>以上SIR模型说明了在没有外力（例如隔离措施）影响下传染病在人群中的发展，但是，高速发展的现代社会是不会任由疾病随意蔓延，接下来，让我们看一下在真实世界条件下的仿真模拟。</span></p>
+
+
+
+
+      <h2 id='传染仿真模型'><span>传染仿真模型</span></h2>
+      <p><span>上面我们探索了数学化的传染模型，现在让我们继续以一种直观的方式进行仿真模拟。</span></p>
+      <h3 id='一些基本约定'><span>一些基本约定</span></h3>
+      <p><span>我们先说明一些基本的约定：</span></p>
+      <ul>
+        <li><span>每个粒子代表一个人，蓝色表示易感者（S），红色代表活跃的感染者（I），灰色表示被移除者（R），即得病后痊愈和死亡的人；</span></li>
+        <li><span>感染源有一个可调节的感染半径，感染半径越大，每个感染者的感染范围越大；</span></li>
+        <li><span>初始的感染率表示最开始的时候感染者所占的比例，初始感染率越大，最开始的感染人数越多；</span></li>
+        <li><span>感染概率表示一个人接触了感染者之后被感染的概率；</span></li>
+        <li><span>感染持续天数表示一个人从感染到恢复或死亡所用的天数。</span></li>
+      </ul>
+      <h3 id='隔离'><span>隔离</span></h3>
+      <p>
+        <span>除了这些基本约定，在下面新的仿真模型中，我们还引入了一个新的概念，即</span><strong><span>隔离</span></strong><span>。正如中国和日本在新冠肺炎疫情前期所做的那样，在抗击疫情中使用隔离政策是非常有用的。在我们的模型中，你可以自由调节隔离的两个参数：</span>
+      </p>
+      <ul>
+        <li><span>疫情开始几天后开始启用隔离区：这可能取决于公共卫生部门对疫情的反应速度、隔离场所的建设或准备速度等；</span></li>
+        <li><span>一个人被感染几天后开始隔离：这可能取决于传染病检测是否成熟、当地民众检测的意愿与频率以及配合程度；此外，由于传染病可能会有潜伏期，在此阶段内不表现出症状，因此，感染者可能不会意识到自己已经被感染，也就不会去隔离；</span></li>
+      </ul>
+      <p><span>接下来，你可以自由地调节这些参数，来模拟一次疫情的来临。</span></p>
+      <iframe frameborder=0 width="120%" height="560" src="scatter/simulation.html"> </iframe>
+      <h3 id='回答一些问题'><span>回答一些问题</span></h3>
+      <p><span>你可以有目的地调节上面的参数，来探究一些问题，比如：</span></p>
+      <ul>
+        <li><span>如果每个人会接触到更多的人，对疫情传播有什么影响？</span></li>
+        <li><span>如果初始时疫情呈现多点爆发，传染情况会怎样？</span></li>
+        <li><span>启用了隔离区之后，对疫情防控有什么帮助？</span></li>
+        <li><span>启用隔离区一定能控制住疫情的传播吗？</span></li>
+        <li><span>……</span></li>
+      </ul>
+      <p><span>调节参数，回答一下上面的问题吧。你也可以自己提出一些问题来模拟，祝你玩得愉快！</span></p>
+      <p>&nbsp;</p>
+
+
+      <h2 id='联系实际'><span>联系实际</span></h2>
+			<p><span>我们的探索旅程到这里基本结束。虽然我们的模型模拟了一些传染的参数，实现了简单的传染病理想化模拟，但是在现实生活中，影响疫情扩散远不止这些因素。比如学校、超市等公共场所的聚集、民众的社交距离和防疫意识、国家的防疫政策等。下面，让我们来看一下，在复杂的现实案例中，疫情是如何扩散的。</span>
+			</p>
+			<p><span>接下来的图，我们会看到2020-04-12日到 2022-12-5日每日美国各州新冠疫情情况（感染人数，死亡人数和康复人数）。</span></p>
+			<iframe frameborder=0 width="100%" height="1000" src="map/Coronavirus_map.html"> </iframe>
+			<p><span>我们的探索旅程到此结束，我们了解了基本的传染病模型。更进一步，你还可以根据种群生长的特性、疾病的发生及在种群内的传播、发展规律，以及与之有关的社会等因素，建立能反映传染病动力学特性的数学模型；通过对模型动力学性态的定性、定量分析和数值模拟，来分析疾病的发展过程、揭示流行规律、预测变化趋势、分析疾病流行的原因和关键。</span>
+			</p>
+			<p><span>最后，愿凛冬尽散，星河长明，在未来的某刻，我们一定能在疫情散尽的世界自由呼吸。</span></p>
+      <p><span></span><img src="end.png" alt="TheEnd" style="zoom:300%;" /></span></p>
+      <div style="min-height: 200px;">  </div>
+
+
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="height: 100%">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.9"></script>
+
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="js/d3.v3.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/echarts.min.js"></script>
+</head>
+
+<body style="height: 100%;margin: 0">
+    <script>
+        var dataFileName = "data-usa/10-12-2021.csv";
+        var selected_value = "Confirmed";
+        var Min = 0;
+        var Max = 3800000;
+        var flag = false;
+        var select_date = "2021-10-12";
+    </script>
+
+    <div  id = "block" style="width: 100%;">
+
+        <div id="turn" style="height: 5%;">
+            <div>
+                <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+                打开按钮凸显各个地区的差异&nbsp;&nbsp;&nbsp;
+                <el-switch v-model="value" active-color="#13ce66" inactive-color="#ff4949"
+                    active-value="true" inactive-value="false" @change='changeStatus'>
+                </el-switch>
+            </div>
+        </div>
+
+        <div id="buttons">
+
+            <el-row>
+                <el-button plain onclick="Change_Confirmed()"> 感染 </el-button>
+                <el-button plain onclick="Change_Deaths()"> 死亡 </el-button>
+                <el-button plain onclick="Change_Recovered()"> 康复 </el-button>
+            </el-row>
+        </div>
+
+        <div id="CDdiv">
+            <div>
+                <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+            滑动条结束日期 &nbsp;&nbsp;&nbsp;
+                <el-date-picker v-model="checkDateEnd" :picker-options="expireTimeOption" :default-value="timeDefaultShow"
+                    value-format="timestamp" type="date" placeholder="选择滑动条结束日期">
+                </el-date-picker>
+            </div>
+            <el-slider v-model="setSelectDate" :step="1" :min="1" :max="15" :format-tooltip="formatTooltip" @change="changeDate"
+                show-stops>
+            </el-slider>
+
+        </div>
+    </div>
+
+    <script>
+
+        function Change_Confirmed() {
+            selected_value = "Confirmed";
+            show();
+        };
+        function Change_Deaths() {
+            selected_value = "Deaths";
+            show();
+        };
+        function Change_Recovered() {
+            selected_value = "Recovered";
+            show();
+        }
+    </script>
+    <div id="container" style="height: 80%;"></div>
+
+    <script type="text/javascript">
+        //获取csv对象
+        function show() {
+            let csv = d3.dsv(",", "text/csv;charset=utf-8"); // 逗号分割，设置编码，这样就可以正常显示中文了
+            let data = [];
+            // 获取数据
+            csv(dataFileName, function (error, csvdata) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    for (let i = 0; i < csvdata.length; i++) {
+                        const info = csvdata[i];
+                        data.push({ 'name': info['Province_State'], 'value': info[selected_value] });
+                    }
+                    console.log(data);
+                    if (flag == "true") {
+                        Max = Number(data[0].value);
+                        Min = Number(data[0].value);
+                        for (var i = 1; i < data.length - 1; i++) {
+                            Min = Math.min(Min, Number(data[i].value));
+                            Max = Math.max(Max, Number(data[i].value));
+                        }
+                    }
+                    else {
+                        Min = 0;
+                        Max = 3800000;
+                    }
+
+                    var dom1 = document.getElementById('container');
+                    var myChart1 = echarts.init(dom1, null, {
+                        renderer: 'canvas',
+                        useDirtyRect: false
+                    });
+                    var app1 = {};
+                    var option1;
+
+                    myChart1.showLoading();
+                    $.get('datamap.json', function (usaJson) {
+                        myChart1.hideLoading();
+                        echarts.registerMap('USA', usaJson, {
+                            Alaska: {
+                                left: -131,
+                                top: 25,
+                                width: 15
+                            },
+                            Hawaii: {
+                                left: -110,
+                                top: 28,
+                                width: 5
+                            },
+                            'Puerto Rico': {
+                                left: -76,
+                                top: 26,
+                                width: 2
+                            }
+                        });
+                        option1 = {
+                            title: {
+                                text: selected_value + " people in USA on " + select_date,
+                                left: 'center',
+                                textStyle: {
+                                    fontSize: 40
+                                }
+                            },
+                            tooltip: {
+                                trigger: 'item',
+                                showDelay: 0,
+                                transitionDuration: 0.2
+                            },
+                            visualMap: {
+                                left: 'right',
+                                min: Min,
+                                max: Max,
+                                inRange: {
+                                    color: [
+                                        '#313695',
+                                        '#4575b4',
+                                        '#74add1',
+                                        '#abd9e9',
+                                        '#e0f3f8',
+                                        '#ffffbf',
+                                        '#fee090',
+                                        '#fdae61',
+                                        '#f46d43',
+                                        '#d73027',
+                                        '#a50026'
+                                    ]
+                                },
+                                text: ['High', 'Low'],
+                                calculable: true
+                            },
+                            toolbox: {
+                                show: true,
+                                left: 'left',
+                                top: 'top',
+                                feature: {
+                                    dataView: { readOnly: false },
+                                    restore: {},
+                                    saveAsImage: {}
+                                }
+                            },
+                            series: [
+                                {
+                                    name: selected_value,
+                                    type: 'map',
+                                    roam: true,
+                                    map: 'USA',
+                                    emphasis: {
+                                        label: {
+                                            show: true
+                                        }
+                                    },
+                                    data: data
+                                }
+                            ]
+                        };
+
+                        myChart1.setOption(option1);
+
+                    });
+
+                    if (option1 && typeof option1 === 'object') {
+                        myChart1.setOption(option1);
+
+                    }
+                    window.addEventListener('resize', myChart1.resize);
+                }
+            });
+        }
+
+    </script>
+    <script>show();
+    document.getElementById('buttons').style.float = 'right';
+    // document.getElementById('space').style.float = 'left';
+    </script>
+
+</body>
+<script>
+    new Vue({
+        el: '#CDdiv',
+        data() {
+            return {
+                expireTimeOption: {
+                    disabledDate(time) {
+                        date = new Date(time);
+                        startdate = new Date('2021-06-05')
+                        enddate = new Date('2022-12-5');
+                        return date.getTime() > enddate.getTime() || date.getTime() < startdate.getTime();
+                    }
+                },
+                pickerBeginDateBefore: {
+                    disabledDate(time) {
+                        return time.getTime() > Date.now();
+                    }
+                },
+                checkDateEnd: null,
+                setSelectDate: 1,
+                setSelectTime: '',
+                timeDefaultShow: new Date('2021-10-12')
+            }
+        },
+
+        components: {},
+        mounted() { },
+        methods: {
+
+            formatTooltip(val) {
+                if (this.checkDateEnd != null) {
+                    let time = this.checkDateEnd;
+                    if (val !== 15) {
+                        time = time - ((15 - val) * 86400000 * 30)
+                    }
+                    this.setSelectTime = time
+                    let nowDate = this.dateFormat(parseInt(time));//格式化时间
+                    return nowDate
+                } else {
+
+                    return;
+                }
+            },
+            //滑块选择时间时，发起请求
+            changeDate() {
+                checkDateEnd: this.setSelectTime
+            },
+
+            //时间格式化函数，此处仅针对yyyy-MM-dd hh:mm:ss 的格式进行格式化
+            dateFormat(time) {
+                var date = new Date(time);
+                var year = date.getFullYear();
+                var month = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1;
+                var day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
+
+                dataFileName = "data-usa/" + month + '-' + day + '-' + year + ".csv";
+                select_date = year + '.' + month + '.' + day;
+                show();
+                // 拼接
+                return year + '-' + month + '-' + day;
+            }
+        }
+    }
+    ),
+    new Vue({
+        el: '#turn',
+        data() {
+            return {
+                value: "false"
+            }
+        },
+        methods: {
+            //该参数为当前的value值
+            changeStatus: function (callback) {
+                flag = callback;
+                show();
+                return callback;
+            }
+        }
+    }),
+    new Vue({
+            el: '#buttons',
+            data() {
+                return {
+                    value: ''
+                }
+            }
+        })
+
+</script>
+
+</html>

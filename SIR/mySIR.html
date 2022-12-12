@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="height: 100%">
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.7.9"></script>
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+<boby>
+  <div id="block" style="width: 50%">
+    <span class="demonstration">感染系数（β）</span>
+    <el-slider v-model="value2" :step="20" show-stops :format-tooltip="formatTooltip">
+    </el-slider>
+  </div>
+
+</boby>
+<boby>
+  <div id="block2" style="width: 50%">
+    <span class="demonstration">恢复率系数（γ）</span>
+    <el-slider v-model="value2" :step="20"  show-stops :format-tooltip="formatTooltip">
+    </el-slider>
+  </div>
+
+</boby>
+
+<body style="height: 100%; margin: 0">
+  <div id="container" style="height: 80%"></div>
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/jquery"></script>
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
+
+  <script type="text/javascript">
+    var chose = 0
+    new Vue({
+      el: '#block',
+      data() {
+        return {
+          value2: 0
+        }
+      },
+      methods: {
+        formatTooltip(val) {
+          val=val/100;
+          chose = val;
+          return val;
+        }
+      }
+
+    })
+    new Vue({
+      el: '#block2',
+      data() {
+        return {
+          value2: 0
+        }
+      },
+      methods: {
+        formatTooltip(val) {
+          val=val/100;
+          if(chose==0){
+            $.get('data0.json',
+              function (_rawData) {
+                run(_rawData);
+              }
+            );
+          }
+          else if(chose==0.2){
+            if(val==0){  
+              $.get('data20.json',
+                function (_rawData) {
+                  run(_rawData);
+                }
+              );
+            }
+            else if(val==0.2){
+              $.get('data22.json',
+                function (_rawData) {
+                  run(_rawData);
+                }
+              );
+            }
+            else if(val==0.4){
+              $.get('data24.json',
+                function (_rawData) {
+                  run(_rawData);
+                }
+              );
+            }
+            else if(val==0.6){
+              $.get('data26.json',
+                function (_rawData) {
+                  run(_rawData);
+                }
+              );
+            }
+            else if(val==0.8){
+              $.get('data28.json',
+                function (_rawData) {
+                  run(_rawData);
+                }
+              );
+            }
+            else if(val==1){
+              $.get('data210.json',
+                function (_rawData) {
+                  run(_rawData);
+                }
+              );
+            }
+          }
+          else if(chose==0.4){
+            if(val==0){  
+              $.get('data40.json',
+                function (_rawData) {
+                  run(_rawData);
+                }
+              );
+            }
+            else if(val==0.2){
+              $.get('data42.json',
+                function (_rawData) {
+                  run(_rawData);
+                }
+              );
+            }
+            else if(val==0.4){
+              $.get('data44.json',
+                function (_rawData) {
+                  run(_rawData);
+                }
+              );
+            }
+            else if(val==0.6){
+              $.get('data46.json',
+                function (_rawData) {
+                  run(_rawData);
+                }
+              );
+            }
+            else if(val==0.8){
+              $.get('data48.json',
+                function (_rawData) {
+                  run(_rawData);
+                }
+              );
+            }
+            else if(val==1){
+              $.get('data410.json',
+                function (_rawData) {
+                  run(_rawData);
+                }
+              );
+            }
+          }
+          else if(chose==0.6){
+            if(val==0){  
+              $.get('data60.json',
+                function (_rawData) {
+                  run(_rawData);
+                }
+              );
+            }
+            else if(val==0.2){
+              $.get('data62.json',
+                function (_rawData) {
+                  run(_rawData);
+                }
+              );
+            }
+            else if(val==0.4){
+              $.get('data64.json',
+                function (_rawData) {
+                  run(_rawData);
+                }
+              );
+            }
+            else if(val==0.6){
+              $.get('data66.json',
+                function (_rawData) {
+                  run(_rawData);
+                }
+              );
+            }
+            else if(val==0.8){
+              $.get('data68.json',
+                function (_rawData) {
+                  run(_rawData);
+                }
+              );
+            }
+            else if(val==1){
+              $.get('data610.json',
+                function (_rawData) {
+                  run(_rawData);
+                }
+              );
+            }
+          }
+          else if(chose==0.8){
+            if(val==0){  
+              $.get('data80.json',
+                function (_rawData) {
+                  run(_rawData);
+                }
+              );
+            }
+            else if(val==0.2){
+              $.get('data82.json',
+                function (_rawData) {
+                  run(_rawData);
+                }
+              );
+            }
+            else if(val==0.4){
+              $.get('data84.json',
+                function (_rawData) {
+                  run(_rawData);
+                }
+              );
+            }
+            else if(val==0.6){
+              $.get('data86.json',
+                function (_rawData) {
+                  run(_rawData);
+                }
+              );
+            }
+            else if(val==0.8){
+              $.get('data88.json',
+                function (_rawData) {
+                  run(_rawData);
+                }
+              );
+            }
+            else if(val==1){
+              $.get('data810.json',
+                function (_rawData) {
+                  run(_rawData);
+                }
+              );
+            }
+          }
+          else if(chose==1){
+            if(val==0){  
+              $.get('data100.json',
+                function (_rawData) {
+                  run(_rawData);
+                }
+              );
+            }
+            else if(val==0.2){
+              $.get('data102.json',
+                function (_rawData) {
+                  run(_rawData);
+                }
+              );
+            }
+            else if(val==0.4){
+              $.get('data104.json',
+                function (_rawData) {
+                  run(_rawData);
+                }
+              );
+            }
+            else if(val==0.6){
+              $.get('data106.json',
+                function (_rawData) {
+                  run(_rawData);
+                }
+              );
+            }
+            else if(val==0.8){
+              $.get('data108.json',
+                function (_rawData) {
+                  run(_rawData);
+                }
+              );
+            }
+            else if(val==1){
+              $.get('data1010.json',
+                function (_rawData) {
+                  run(_rawData);
+                }
+              );
+            }
+          }
+          //
+          return val;
+        }
+      }
+
+    })
+    var dom = document.getElementById('container');
+    var myChart = echarts.init(dom, null, {
+      renderer: 'canvas',
+      useDirtyRect: false
+    });
+    var app = {};
+    var option;
+
+
+
+    function run(_rawData) {
+      const countries = [
+        'Infectious',
+        'Recovereds',
+        'Susceptibles',
+      ];
+      const datasetWithFilters = [];
+      const seriesList = [];
+      echarts.util.each(countries, function (country) {
+        var datasetId = 'dataset_' + country;
+        datasetWithFilters.push({
+          id: datasetId,
+          fromDatasetId: 'dataset_raw',
+          transform: {
+            type: 'filter',
+            config: {
+              and: [
+                { dimension: 'Time', gte: 0 },
+                { dimension: 'Type', '=': country }
+              ]
+            }
+          }
+        });
+        seriesList.push({
+          type: 'line',
+          datasetId: datasetId,
+          showSymbol: false,
+          name: country,
+          endLabel: {
+            show: true,
+            formatter: function (params) {
+              return params.value[1] + ': ' + params.value[0];
+            }
+          },
+          labelLayout: {
+            moveOverlap: 'shiftY'
+          },
+          emphasis: {
+            focus: 'series'
+          },
+          encode: {
+            x: 'Time',
+            y: 'Number',
+            label: ['Type', 'Number'],
+            itemName: 'Time',
+            tooltip: ['Number']
+          }
+        });
+      });
+      option = {
+        animationDuration: 10000,
+        dataset: [
+          {
+            id: 'dataset_raw',
+            source: _rawData
+          },
+          ...datasetWithFilters
+        ],
+        title: {
+          text: 'SIR模型中的易感人数,感染人数和移除人数'
+        },
+        tooltip: {
+          order: 'valueDesc',
+          trigger: 'axis'
+        },
+        xAxis: {
+          type: 'category',
+          nameLocation: 'middle'
+        },
+        yAxis: {
+          name: '在人群中所占比例(%)'
+        },
+        grid: {
+          right: 140
+        },
+        series: seriesList
+      };
+      myChart.setOption(option);
+    }
+
+    if (option && typeof option === 'object') {
+      myChart.setOption(option);
+    }
+
+    window.addEventListener('resize', myChart.resize);
+  </script>
+</body>
+<script>
+
+
+</script>
+
+</html>
