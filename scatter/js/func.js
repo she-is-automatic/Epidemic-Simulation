@@ -1,25 +1,3 @@
-function infodisplay(infodata) {
-  document.getElementById('infoH').innerHTML = infodata
-}
-
-darkmode = false
-
-
-function graphToSvgY(value, graphymin, graphymax) {
-  if (graphymin == graphymax) {
-    graphymin = graphymin - 1
-    graphymax = graphymax + 1
-    console.log('Conversion error, maximum value is equal to minimum value. Max value was raised by 1 and Min value was reduced by 1. Max value : ' + graphymax + ' and Min value : ' + graphymin)
-  }
-  if (graphymin > graphymax) {
-    temp = graphymin
-    graphymin = graphymax
-    graphymax = temp
-    console.log('Conversion error, maximum value less than minimum value. Values were swapped. Max value : ' + graphymax + ' and Min value : ' + graphymin)
-  }
-  y = ((-80) / (graphymax - graphymin)) * (value - graphymin) + 90
-  return y
-}
 
 function graphToScaledY(value, graphymin, graphymax, aspectratio) {
   if (aspectratio > 1) {
@@ -318,12 +296,7 @@ function updateGraphZoom(graphname, newMinMax) {
     lineElement.setAttribute('y1', graphToScaledY(gdata.ymax, gdata.ymin, gdata.ymax, aratio) + '%');
     lineElement.setAttribute('x2', graphToScaledX(gdata.axislocationX, gdata.xmin, gdata.xmax, aratio) + '%')
     lineElement.setAttribute('y2', graphToScaledY(gdata.ymin, gdata.ymin, gdata.ymax, aratio) + '%');
-    if (darkmode == false) {
-      lineElement.style.stroke = gdata.yaxiscolor
-    }
-    else {
-      lineElement.style.stroke = 'hsla(0, 0%, 100%, 1)'
-    }
+
     gdata.yaxisElement = lineElement
   }
 
@@ -333,12 +306,7 @@ function updateGraphZoom(graphname, newMinMax) {
     lineElement.setAttribute('y1', graphToScaledY(gdata.axislocationY, gdata.ymin, gdata.ymax, aratio) + '%');
     lineElement.setAttribute('x2', graphToScaledX(gdata.xmax, gdata.xmin, gdata.xmax, aratio) + '%')
     lineElement.setAttribute('y2', graphToScaledY(gdata.axislocationY, gdata.ymin, gdata.ymax, aratio) + '%');
-    if (darkmode == false) {
-      lineElement.style.stroke = gdata.xaxiscolor
-    }
-    else {
-      lineElement.style.stroke = 'hsla(0, 0%, 100%, 1)'
-    }
+
     gdata.xaxisElement = lineElement
   }
 
@@ -369,12 +337,7 @@ function updateGraphZoom(graphname, newMinMax) {
         lineElement.setAttribute('y2', graphToScaledY(gdata.ymax, gdata.ymin, gdata.ymax, aratio) + '%');
         lineElement.setAttribute('id', gdata.name + '-xmajorgridline-' + m)
       }
-      if (darkmode == false) {
-        lineElement.style.stroke = gdata.xmajorgridcolor
-      }
-      else {
-        lineElement.style.stroke = 'hsla(0, 0%, 100%, 1)'
-      }
+
       lineElement.setAttribute('id', gdata.name + '-xmajorgridline-' + m)
       lineElement.style.strokeWidth = gdata.xmajorgridthickness + '%';
       gdata.xmajorgridElements.push(lineElement)
@@ -409,12 +372,7 @@ function updateGraphZoom(graphname, newMinMax) {
         lineElement.setAttribute('y2', graphToScaledY(ticklocation, gdata.ymin, gdata.ymax, aratio) + '%');
       }
       lineElement.setAttribute('id', gdata.name + '-ymajorgridline-' + m)
-      if (darkmode == false) {
-        lineElement.style.stroke = gdata.ymajorgridcolor
-      }
-      else {
-        lineElement.style.stroke = 'hsla(0, 0%, 100%, 1)'
-      }
+
       lineElement.setAttribute('id', gdata.name + '-ymajorgridline-' + m)
       lineElement.style.strokeWidth = gdata.ymajorgridthickness + '%';
       gdata.ymajorgridElements.push(lineElement)
@@ -487,12 +445,7 @@ function updateGraphZoom(graphname, newMinMax) {
         textElement.style.userSelect = 'none'
         // textElement.setAttribute('text-anchor', 'middle')
         textElement.style.fill = gdata.ymajorgridlabelcolor
-        if (darkmode == false) {
-          textElement.style.fill = gdata.ymajorgridlabelcolor
-        }
-        else {
-          textElement.style.fill = 'hsla(0, 0%, 100%, 1)'
-        }
+
         svgElement.appendChild(textElement);
 
         gdata.ymajorlabelsElements.push(textElement)
@@ -563,12 +516,7 @@ function updateGraphZoom(graphname, newMinMax) {
           textElement.setAttribute('transform', 'rotate(90, ' + transformedXval + ', ' + transformedYval + ')')
         }
         textElement.style.fontFamily = 'Source Sans Pro'
-        if (darkmode == false) {
-          textElement.style.fill = gdata.xmajorgridlabelcolor
-        }
-        else {
-          textElement.style.fill = 'hsla(0, 0%, 100%, 1)'
-        }
+
         svgElement.appendChild(textElement);
 
         gdata.xmajorlabelsElements.push(textElement)
@@ -786,16 +734,6 @@ function addGraph(parentdiv, name, gdata) {
   }
 
 
-
-  if (darkmode) {
-    gdata.yaxiscolor = gdata.yaxiscolor || 'hsla(0, 100%, 100%, 1)'
-    gdata.xaxiscolor = gdata.xaxiscolor || 'hsla(0, 100%, 100%, 1)'
-    gdata.xmajorgridlabelcolor = gdata.xmajorgridlabelcolor || 'hsla(0, 100%, 100%, 1)'
-    gdata.ymajorgridlabelcolor = gdata.ymajorgridlabelcolor || 'hsla(0, 100%, 100%, 1)'
-    gdata.xmajorgridcolor = gdata.xmajorgridcolor || 'hsla(0, 100%, 100%, 1)'
-    gdata.ymajorgridcolor = gdata.ymajorgridcolor || 'hsla(0, 100%, 100%, 1)'
-  }
-
   gdata.yaxisthickness = gdata.yaxisthickness || 0.5
   gdata.yaxiscolor = gdata.yaxiscolor || 'hsla(0, 50%, 0%, 1)'
 
@@ -922,15 +860,7 @@ function addGraph(parentdiv, name, gdata) {
   gdata.xmajorgridlabelvisibility = gdata.xmajorgridlabelvisibility || 'yes'
   gdata.xmajorgridlabelcolor = gdata.xmajorgridlabelcolor || 'hsla(190, 0%, 50%, 1)'
 
-  if (darkmode) {
-    gdata.ymajorgridlabelcolor = gdata.ymajorgridlabelcolor || 'hsla(190, 100%, 50%, 1)'
-    gdata.xmajorgridlabelcolor = gdata.xmajorgridlabelcolor || 'hsla(190, 100%, 50%, 1)'
 
-  }
-  else {
-    gdata.ymajorgridlabelcolor = gdata.ymajorgridlabelcolor || 'hsla(190, 0%, 50%, 1)'
-    gdata.xmajorgridlabelcolor = gdata.xmajorgridlabelcolor || 'hsla(190, 0%, 50%, 1)'
-  }
 
 
 
@@ -1071,14 +1001,7 @@ function addGraph(parentdiv, name, gdata) {
   gdata.xaxislabelshift = gdata.xaxislabelshift || 2
   gdata.yaxislabelshift = gdata.yaxislabelshift || 2
 
-  if (darkmode) {
-    gdata.yaxislabelcolor = gdata.yaxislabelcolor || 'hsla(190, 100%, 100%, 1)'
-    gdata.xaxislabelcolor = gdata.xaxislabelcolor || 'hsla(190, 100%, 100%, 1)'
-  }
-  else {
-    gdata.yaxislabelcolor = gdata.yaxislabelcolor || 'hsla(190, 0%, 0%, 1)'
-    gdata.xaxislabelcolor = gdata.xaxislabelcolor || 'hsla(190, 0%, 0%, 1)'
-  }
+
 
 
 
@@ -2442,15 +2365,6 @@ function graphTouchDisable(event) {
   event.preventDefault()
 }
 
-// 竖屏 宽屏
-dmode = 'square'
-if (1.25 * window.innerWidth < window.innerHeight && window.innerWidth < window.innerHeight) {
-  dmode = 'portrait'
-}
-else if (window.innerWidth > 1.3 * window.innerHeight && window.innerWidth > window.innerHeight) {
-  dmode = 'landscape'
-}
-
 function setFont(divCollection, fontval) {
   for (divN = 0; divN < divCollection.length; divN++) {
     document.getElementById(divCollection[divN]).style.fontSize = fontval
@@ -2496,82 +2410,56 @@ function shuffle(array) {
 
 // 布局
 function handleLayout1() {
-  if (dmode == 'landscape') {
-    document.getElementById('mainVSpacer1').style.width = '0%'
-    document.getElementById('MainBlock1').style.width = '48%'
-    document.getElementById('mainVSpacer2').style.width = '5%'
-    document.getElementById('MainBlock2').style.width = '43%'
-    document.getElementById('mainVSpacer3').style.width = '0%'
 
-    $('#plotGraphH').appendTo('#MainBlock1')
-    $('#mainB2HSpacer5').appendTo('#MainBlock1')
-    $('#parametersH').appendTo('#MainBlock1')
-    $('#mainB2HSpacer6').appendTo('#MainBlock1')
+  document.getElementById('MainBlock1').style.width = '50%'
+  document.getElementById('MainBlock2').style.width = '50%'
 
-    document.getElementById('mainB2HSpacer1').style.height = '6%'
-    document.getElementById('maintitle').style.textAlign = 'middle'
-    document.getElementById('maintitle').style.fontSize = '2.5vmax'
+  $('#plotGraphH').appendTo('#MainBlock1')
+  $('#parametersH').appendTo('#MainBlock1')
 
-    document.getElementById('maintitle').innerHTML = "<font style='font-weight: bold;'>传染病模型 </font>"
+  document.getElementById('mainB2HSpacer1').style.height = '10%'
+  document.getElementById('maintitle').style.textAlign = 'middle'
+  document.getElementById('maintitle').style.fontSize = '2.5vmax'
+  document.getElementById('maintitle').innerHTML = "<font style='font-weight: bold;'>传染病模型 </font>"
 
-    document.getElementById('mainB2HSpacer2').style.height = '3%'
+  document.getElementById('mainB2HSpacer2').style.height = '3%'
 
+  document.getElementById('simpleCaseGraphH').style.height = '65%'
+  document.getElementById('centralLocationCaseGraphH').style.height = '65%'
+  document.getElementById('communitiesCaseGraphH').style.height = '65%'
+  document.getElementById('simpleCaseGraph&QH').style.height = '65%'
+  document.getElementById('centralLocationQuarantineCaseGraphH').style.height = '65%'
+  document.getElementById('communitiesQuarantineCaseGraphH').style.height = '65%'
 
-    document.getElementById('upperLayer').style.height = '65%'
-    document.getElementById('simpleCaseGraphH').style.height = '65%'
-    document.getElementById('centralLocationCaseGraphH').style.height = '65%'
-    document.getElementById('communitiesCaseGraphH').style.height = '65%'
-    document.getElementById('simpleCaseGraph&QH').style.height = '65%'
-    document.getElementById('centralLocationQuarantineCaseGraphH').style.height = '65%'
-    document.getElementById('communitiesQuarantineCaseGraphH').style.height = '65%'
+  document.getElementById('play-Info-QuarantineH').style.height = '4%'
 
-    document.getElementById('play-Info-QuarantineH').style.height = '4%'
+  document.getElementById('playbutton').style.fontSize = '0.8vmax'
+  document.getElementById('resetbutton').style.fontSize = '0.8vmax'
 
-    document.getElementById('playbutton').style.fontSize = '0.8vmax'
-    document.getElementById('resetbutton').style.fontSize = '0.8vmax'
+  document.getElementById('playButtonH').style.width = '12%'
+  document.getElementById('resetButtonH').style.width = '12%'
 
-    document.getElementById('playButtonH').style.width = '12%'
-    document.getElementById('resetButtonH').style.width = '12%'
-
-    document.getElementById('play-Info-QuarantineHSpacer1').style.width = '4%'
+  document.getElementById('play-Info-QuarantineHSpacer1').style.width = '4%'
 
 
-    document.getElementById('quarantineH').style.fontSize = '50vmax'
-    document.getElementById('quarantineH').style.float = 'right'
-    document.getElementById('quarantineH').style.width = '50%'
-    document.getElementById('quarantineH').style.fontFamily = 'Source Sans Pro'
-    document.getElementById('quarantinecheckLabel').style.fontSize = '0.9vmax'
-
-    document.getElementById('mainB2HSpacer3').style.height = '3%'
-    document.getElementById('caseTypeChooseH').style.height = '4%'
-
-    document.getElementById('simpleCaseoption').style.fontSize = '0.86vmax'
-    document.getElementById('centralLocationoption').style.fontSize = '0.86vmax'
-    document.getElementById('communitiesoption').style.fontSize = '0.86vmax'
-
-    document.getElementById('simpleCaseoptionH').style.width = '0%'
-    document.getElementById('centralLocationoptionH').style.width = '0%'
-    document.getElementById('communitiesoptionH').style.width = '0%'
+  document.getElementById('quarantineH').style.fontSize = '50vmax'
+  document.getElementById('quarantineH').style.float = 'right'
+  document.getElementById('quarantineH').style.width = '50%'
+  document.getElementById('quarantineH').style.fontFamily = 'Source Sans Pro'
+  document.getElementById('quarantinecheckLabel').style.fontSize = '0.9vmax'
 
 
-    document.getElementById('mainB1HSpacer1').style.height = '15%'
-    document.getElementById('plotGraphH').style.height = '0%'
-    document.getElementById('parametersH').style.height = '70%'
 
-    document.getElementById('parametersTitleText').style.fontSize = '2vmax'
-    document.getElementById('parametersTitleText').style.height = '10%'
+  document.getElementById('mainA1HSpacer1').style.height = '15%'
+  document.getElementById('plotGraphH').style.height = '0%'
+  document.getElementById('parametersH').style.height = '70%'
 
-    document.getElementById('additionalPText').style.fontSize = '0.7vmax'
+  document.getElementById('parametersTitleText').style.fontSize = '2vmax'
+  document.getElementById('parametersTitleText').style.height = '10%'
 
-    document.getElementById('parametersListH').style.fontSize = '0.96vmax'
+  document.getElementById('parametersListH').style.fontSize = '0.96vmax'
 
-    document.getElementById('mainB2HSpacer6').style.height = '1%'
 
-    $('#infoH').insertAfter('#mainB2HSpacer6')
-
-    document.getElementById('gradfillParameters').style.background = 'linear-gradient(to bottom,rgba(0, 0, 0, 0), rgba(255, 255, 255, 0) 100%, rgba(255, 255, 255, 0))'
-
-  }
 }
 
 handleLayout1()
@@ -2605,41 +2493,21 @@ parameterData[5] = { name: 'startQ', div: '疫情 @@@ 天后开始启用隔离�
 parameterData[6] = { name: 'numberOfParticles', div: '粒子数目 @@@', initValue: 200, max: 2000, min: 10, step: 1, color: '198, 100%, 50%', transform: 'parseInt(#paraValue#)', requiresReset: true, runFAtEnd: '' }
 // 直径
 parameterData[7] = { name: 'particleSize', div: '粒子的大小  @@@ ', initValue: 0.7, max: 1, min: 0.1, step: 0.001, color: '198, 100%, 50%', transform: 'parseFloat(#paraValue#)', requiresReset: true, runFAtEnd: '' }
-// 每秒模拟天数
-divAdjust = ' 每秒模拟 @@@ 天 <br/><font style="color:grey; font-size: 1.2vmax;"> </font>'
-parameterData[8] = { name: 'daysEverySecond', div: divAdjust, initValue: 3, max: 20, min: 1, step: 1, color: '198, 100%, 50%', transform: 'parseInt(#paraValue#)', requiresReset: true, runFAtEnd: 'setAnimationDetails()' }
-
 
 parameterSliderRMap = {}
 
 function addVariousParameters() {
-  if (dmode == 'landscape') {
-    for (var parameterIndex in parameterData) {
-      pName = parameterData[parameterIndex].name + 'div'
-      parameterSliderRMap[pName + 'Slider'] = parameterIndex
-      parameterDivData = '<div id="parameter' + pName + 'Box" style="margin:0px;width:100%; position: relative; z-index: 1;display: flex;"><div id="parameter' + pName + 'Text" style="margin:0px;width:45%; position: relative; z-index: 1;display: inline-block; text-align: left;">' + parameterData[parameterIndex].div.replace(/@@@/g, '<font style="font-weight:bold; color:hsla(' + parameterData[parameterIndex].color + ', 1);">' + parameterData[parameterIndex].initValue + '</font>') + '</div><div id="parameter' + pName + 'SliderH" style="margin:0px;width:55%; position: relative; z-index: 1; display: flex; align-items: center;"></div></div><div style="width: 100%; height: 7%"></div>'
-      $(parameterDivData).appendTo('#parametersListH')
-      divSlider('parameter' + pName + 'SliderH', pName + 'Slider', parameterData[parameterIndex].min, parameterData[parameterIndex].max, parameterData[parameterIndex].initValue, parameterData[parameterIndex].step, 'parameterEvent(event)', '80%', '3px', 'hsla(190, 100%, 100%, 1)', '14px', 'hsla(' + parameterData[parameterIndex].color + ', 1)', '')
+  for (var parameterIndex in parameterData) {
+    pName = parameterData[parameterIndex].name + 'div'
+    parameterSliderRMap[pName + 'Slider'] = parameterIndex
+    parameterDivData = '<div id="parameter' + pName + 'Box" style="margin:0px;width:100%; position: relative; z-index: 1;display: flex;"><div id="parameter' + pName + 'Text" style="margin:0px;width:45%; position: relative; z-index: 1;display: inline-block; text-align: left;">' + parameterData[parameterIndex].div.replace(/@@@/g, '<font style="font-weight:bold; color:hsla(' + parameterData[parameterIndex].color + ', 1);">' + parameterData[parameterIndex].initValue + '</font>') + '</div><div id="parameter' + pName + 'SliderH" style="margin:0px;width:55%; position: relative; z-index: 1; display: flex; align-items: center;"></div></div><div style="width: 100%; height: 7%"></div>'
+    $(parameterDivData).appendTo('#parametersListH')
+    divSlider('parameter' + pName + 'SliderH', pName + 'Slider', parameterData[parameterIndex].min, parameterData[parameterIndex].max, parameterData[parameterIndex].initValue, parameterData[parameterIndex].step, 'parameterEvent(event)', '80%', '3px', 'hsla(190, 100%, 100%, 1)', '14px', 'hsla(' + parameterData[parameterIndex].color + ', 1)', '')
 
-      evalString = parameterData[parameterIndex].transform.replace(/#paraValue#/g, parameterData[parameterIndex].initValue)
-      simulationParameters[parameterData[parameterIndex].name] = eval(evalString)
+    evalString = parameterData[parameterIndex].transform.replace(/#paraValue#/g, parameterData[parameterIndex].initValue)
+    simulationParameters[parameterData[parameterIndex].name] = eval(evalString)
 
-    }
   }
-  else {
-    for (var parameterIndex in parameterData) {
-      pName = parameterData[parameterIndex].name + 'div'
-      parameterSliderRMap[pName + 'Slider'] = parameterIndex
-      parameterDivData = '<div id="parameter' + pName + 'Box" style="margin:0px;width:100%; position: relative; z-index: 1;display: inline-block"><div id="parameter' + pName + 'Text" style="margin:0px;width:92%; position: relative; z-index: 1;display: inline-block; text-align: left;">' + parameterData[parameterIndex].div.replace(/@@@/g, '<font style="font-weight: bold; color:hsla(' + parameterData[parameterIndex].color + ', 1);">' + parameterData[parameterIndex].initValue + '</font>') + '</div><div style="width: 100%; height: 8%"></div><div id="parameter' + pName + 'SliderH" style="margin:0px;width:100%; position: relative; z-index: 1;display: inline-block;"></div><div style="width: 100%; height: 15%"></div></div>'
-      $(parameterDivData).appendTo('#parametersListH')
-      divSlider('parameter' + pName + 'SliderH', pName + 'Slider', parameterData[parameterIndex].min, parameterData[parameterIndex].max, parameterData[parameterIndex].initValue, parameterData[parameterIndex].step, 'parameterEvent(event)', '70%', '4px', 'hsla(190, 100%, 100%, 1)', '17px', 'hsla(' + parameterData[parameterIndex].color + ', 1)', '')
-
-      evalString = parameterData[parameterIndex].transform.replace(/#paraValue#/g, parameterData[parameterIndex].initValue)
-      simulationParameters[parameterData[parameterIndex].name] = eval(evalString)
-
-    }
-  }
-
 }
 
 function parameterEvent(event) {
@@ -2756,18 +2624,11 @@ function changeParameterWithoutReload(paraN, paraValueToSet) {
 }
 
 function parameterHScroll() {
-  if (dmode == 'landscape') {
-    stringToAddAsStyle = '<style>#parametersListH::-webkit-scrollbar { width: 0.4%;} #parametersListH::-webkit-scrollbar-track {-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1); border-radius: 30px;} #parametersListH::-webkit-scrollbar-thumb { background-color: hsla(190, 100%, 50%, 1); border-radius: 50px;}</style>'
-  }
-  else {
-    stringToAddAsStyle = '<style>#parametersListH::-webkit-scrollbar { width: 1%;} #parametersListH::-webkit-scrollbar-track {-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1); border-radius: 30px;} #parametersListH::-webkit-scrollbar-thumb { background-color: hsla(190, 100%, 50%, 1); border-radius: 50px;}</style>'
-  }
-
+  stringToAddAsStyle = '<style>#parametersListH::-webkit-scrollbar { width: 0.4%;} #parametersListH::-webkit-scrollbar-track {-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1); border-radius: 30px;} #parametersListH::-webkit-scrollbar-thumb { background-color: hsla(190, 100%, 50%, 1); border-radius: 50px;}</style>'
   $(stringToAddAsStyle).appendTo('head')
 }
 
 parameterHScroll()
-
 addVariousParameters()
 
 infectionStates = ['infected', 'susceptible', 'removed']
@@ -2782,7 +2643,6 @@ calculationFrameInterval = 0
 
 timeStepsPerDay = 24
 timeStep = 1 / timeStepsPerDay
-
 
 particleVicinityDB = {}
 allParticleVicinityDB = {}
@@ -4354,17 +4214,11 @@ function resetSimHard(event) {
 
 }
 
-
-handleCases = { 'simpleCaseoption': { false: ['simpleCaseGraphH', 'simpleCase', 'simpleCaseGraphG'], true: ['simpleCaseGraph&QH', 'simpleCase&Q', 'simpleCaseGraph&QG'] }, 'centralLocationoption': { false: ['centralLocationCaseGraphH', 'centralLocationCase', 'centralLocationCaseG'], true: ['centralLocationQuarantineCaseGraphH', 'centralLocationQuarantineCase', 'centralLocationQuarantineCaseGraph'] }, 'communitiesoption': { false: ['communitiesCaseGraphH', 'communitiesCase', 'communitiesCaseGraph'], true: ['communitiesQuarantineCaseGraphH', 'communitiesQuarantineCase', 'communitiesQuarantineCaseGraph'] } }
-
 graphToQMap = {}
 graphToQMap['simpleCase'] = ['simpleCase&Q', 'simpleCaseGraph&QG', 'simpleCaseGraph&QH', 'simpleCaseGraphH', 'Simple Case']
 graphToQMap['simpleCase&Q'] = ['simpleCase', 'simpleCaseGraphG', 'simpleCaseGraphH', 'simpleCaseGraph&QH', 'Simple Case with Quarantine']
 
-
 quarantineOn = false
-
-
 
 function handleQClick(event) {
   if (quarantineOn && event.target.checked == false) {
