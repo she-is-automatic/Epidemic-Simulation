@@ -25,6 +25,9 @@
       </ul>
       <p><span>让我们来看看这个最简单的情况吧！</span></p>
       <blockquote>
+        <p><span>红色表示活跃的感染者。</span></p>
+      </blockquote>
+      <blockquote>
         <p><span>你可以点击棋盘来使其重新开始模拟。</span></p>
       </blockquote>
       <iframe frameborder=0 width="100%" height="630" src="intro/html/spread.html"> </iframe>
@@ -48,6 +51,9 @@
         <span>引入感染概率的概念后，我们的模型看起来比最简单的情况真实了不少，值得庆祝！但是，还存在一个十分恐怖的问题：我被感染之后，将永远不会康复！如果真的存在这样的传染病，这将是人类面临的最可怕的灾难。因此，我们再引入一个概念，即</span><strong><span>康复日期</span></strong><span>，它表示一个人从感染到康复所需的天数。</span>
       </p>
       <blockquote>
+        <p><span>红色表示活跃的感染者，蓝色表示已经康复的感染者。</span></p>
+      </blockquote>
+      <blockquote>
         <p><span>你可以调节棋盘下方的滑动条，来设置你想设定的康复所需的天数，默认康复日期被设置为 4 天。</span></p>
       </blockquote>
       <iframe frameborder=0 width="100%" height="690" src="intro/html/spread_with_recovery.html"> </iframe>
@@ -56,6 +62,9 @@
       <p>
         <span>引入康复的概念后，在经历一波疫情后，所有人都会康复。这当然是我们希望发生的，但不幸的是，在现实生活中，即使是一次普通的流行性感冒，也有可能夺走一些人的生命。这就是我们接下来要引入的概念：</span><strong><span>死亡率</span></strong><span>，它表示一个人感染疾病后死亡的概率。</span>
       </p>
+      <blockquote>
+        <p><span>红色表示活跃的感染者，蓝色表示已经康复的感染者，黑色表示死亡者。</span></p>
+      </blockquote>
       <blockquote>
         <p><span>你可以调节棋盘下方的滑动条，来设置你想设定的死亡率，默认死亡率被设置为 0.01。</span></p>
       </blockquote>
@@ -87,7 +96,7 @@
         <li><p>I(t): 表示感染者（infective）的数量，指在t时刻已被感染成为患者并且具有传染力的人群数量.</p></li>
         <li><p><span>R(t): 表示移出者（removed）的数量，表示t时刻时已经从感染者移出的人群数量（包括隔离者以及 因治愈获得免疫力的人群）.</span></p></li>
         <li><p><span>γ: 恢复率系数，从染病者中移出的人数与病人数量的比例成正比，比例系数为γ.</span></p></li>
-        <li><p><span>β: 感染系数,t时刻单位时间内，一个病人能传染的易感者数目与此环境内 易感者总数S(t)成正比，设定比例系数为β.</span></p></li>
+        <li><p><span>β: 感染系数，t时刻单位时间内，一个病人能传染的易感者数目与此环境内 易感者总数S(t)成正比，设定比例系数为β.</span></p></li>
       </ul>
       <h3 id='sir微分方程'><span>SIR微分方程</span></h3>
       <p><span>根据这些假设，我们就可以创造出SIR模型的微分方程：</span></p>

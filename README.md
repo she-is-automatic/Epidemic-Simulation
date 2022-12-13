@@ -2,7 +2,9 @@
 
 ## 注意事项
 
-本页面首页的代码不可被格式化，格式化可能会导致排版出现错位的情况
+1. 本项目在线访问地址 👉[Epidemic-Simulation](https://she-is-automatic.github.io/Epidemic-Simulation/)
+
+2. 本页面首页的代码不可被格式化，格式化可能会导致排版出现错位的情况
 
 
 
